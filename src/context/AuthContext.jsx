@@ -1,5 +1,5 @@
-// src/context/AuthContext.jsx - RÉCUPÈRE LE PSEUDO
-import React, { createContext, useContext, useEffect, useState, useCallback } from 'react';
+// src/context/AuthContext.jsx - PSEUDO SIMPLIFIÉ
+import React, { createContext, useContext, useEffect, useState } from 'react';
 import { supabase } from '../lib/supabase';
 
 const AuthContext = createContext();
@@ -14,7 +14,7 @@ export const useAuth = () => {
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
-  const [username, setUsername] = useState('');  // 👈 AJOUTÉ
+  const [username, setUsername] = useState(null);  // 👈 ÉTAT PSEUDO
   const [loading, setLoading] = useState(true);
 
   const login = async (email, password) => {
@@ -26,13 +26,13 @@ export const AuthProvider = ({ children }) => {
     return data;
   };
 
-  const signup = async (email, password, username) => {
-    // 1. Créer compte
+  const signup = async (email, password, usernameInput) => {
+    // 1. Créer compte avec pseudo
     const { data, error } = await supabase.auth.signUp({
       email,
       password,
       options: {
-        data: { username }  // 👈 AJOUTÉ username dans metadata
+        data: { username: usernameInput }  // 👈 STOCKE DIRECT
       }
     });
     
@@ -42,7 +42,7 @@ export const AuthProvider = ({ children }) => {
     if (data.user) {
       await supabase.from('profiles').upsert({
         id: data.user.id,
-        username,  // 👈 STOCKÉ dans profiles
+        username: usernameInput,
         updated_at: new Date().toISOString()
       });
     }
@@ -54,43 +54,26 @@ export const AuthProvider = ({ children }) => {
     await supabase.auth.signOut();
   };
 
-  // 👇 RÉCUPÈRE LE USERNAME au login
-  const fetchUserProfile = useCallback(async (userId) => {
-    const { data } = await supabase
-      .from('profiles')
-      .select('username')
-      .eq('id', userId)
-      .single();
-    
-    if (data?.username) {
-      setUsername(data.username);
-    }
-  }, []);
-
+  // 👇 CHARGE LE PSEUDO
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
       setUser(session?.user ?? null);
-      if (session?.user) {
-        fetchUserProfile(session.user.id);
-      }
+      setUsername(session?.user?.user_metadata?.username || null);
       setLoading(false);
     });
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       setUser(session?.user ?? null);
-      if (session?.user) {
-        fetchUserProfile(session.user.id);
-      } else {
-        setUsername('');
-      }
+      setUsername(session?.user?.user_metadata?.username || null);
+      setLoading(false);
     });
 
     return () => subscription.unsubscribe();
-  }, [fetchUserProfile]);
+  }, []);
 
   const value = { 
     user, 
-    username,  // 👈 DISPONIBLE dans Navbar
+    username, 
     loading, 
     login, 
     signup, 
