@@ -1,4 +1,4 @@
-// src/pages/RecurringSchedulePage.jsx
+// src/pages/SchedulePage.jsx
 import React, { useState, useEffect } from 'react'
 import storageService from '../services/storageService'
 
@@ -11,7 +11,7 @@ function RecurringSchedulePage() {
     startTime: '',
     endTime: '',
     title: '',
-    locationId: null
+    locationIds: [] // CHANGÉ : tableau pour plusieurs lieux
   });
 
   // ORDRE CORRIGÉ : Lundi (1) → Dimanche (0)
@@ -34,9 +34,17 @@ function RecurringSchedulePage() {
     const locsData = storageService.getLocations();
     setSchedules(schedData);
     setLocations(locsData);
-    if (locsData.length > 0 && !form.locationId) {
-      setForm(prev => ({ ...prev, locationId: locsData[0].id }));
-    }
+  };
+
+  // NOUVEAU : Gérer la sélection multiple de lieux
+  const handleLocationChange = (locationId) => {
+    setForm(prev => {
+      const currentIds = prev.locationIds;
+      const newIds = currentIds.includes(locationId)
+        ? currentIds.filter(id => id !== locationId) // Déselectionner
+        : [...currentIds, locationId]; // Ajouter
+      return { ...prev, locationIds: newIds };
+    });
   };
 
   const handleSubmit = (e) => {
@@ -47,8 +55,13 @@ function RecurringSchedulePage() {
       return;
     }
 
-    storageService.addRecurringSchedule(form);
-    setForm({ dayOfWeek: 1, startTime: '', endTime: '', title: '', locationId: locations[0]?.id });
+    // SAUVEGARDE : locationIds au lieu de locationId
+    storageService.addRecurringSchedule({
+      ...form,
+      locationIds: form.locationIds // Tableau de lieux
+    });
+    
+    setForm({ dayOfWeek: 1, startTime: '', endTime: '', title: '', locationIds: [] });
     setShowForm(false);
     loadData();
   };
@@ -65,6 +78,15 @@ function RecurringSchedulePage() {
     dayValue: day.value,
     schedules: schedules.filter(s => s.dayOfWeek === day.value)
   }));
+
+  // NOUVEAU : Récupérer les noms des lieux pour un créneau
+  const getLocationNames = (locationIds) => {
+    if (!locationIds || locationIds.length === 0) return '📍 Aucun lieu';
+    return locationIds.map(id => {
+      const loc = locations.find(l => l.id === id);
+      return loc ? `📍 ${loc.name}` : 'Lieu inconnu';
+    }).join(', ');
+  };
 
   return (
     <div className="schedule-page">
@@ -86,6 +108,10 @@ function RecurringSchedulePage() {
                       <div className="schedule-info">
                         <h4>{sched.title}</h4>
                         <p className="time">{sched.startTime} - {sched.endTime}</p>
+                        {/* NOUVEAU : Affichage des lieux */}
+                        {sched.locationIds && sched.locationIds.length > 0 && (
+                          <p className="location-text">{getLocationNames(sched.locationIds)}</p>
+                        )}
                       </div>
                       <button onClick={() => handleDelete(sched.id)} className="btn-delete">
                         🗑️
@@ -151,17 +177,27 @@ function RecurringSchedulePage() {
               </div>
             </div>
 
+            {/* NOUVEAU : Sélection multiple de lieux */}
             {locations.length > 0 && (
               <div className="form-group">
-                <label>Lieu</label>
-                <select
-                  value={form.locationId}
-                  onChange={(e) => setForm({ ...form, locationId: parseInt(e.target.value) })}
-                >
-                  {locations.map(loc => (
-                    <option key={loc.id} value={loc.id}>{loc.name}</option>
+                <label>Lieux (cliquez pour sélectionner plusieurs)</label>
+                <div className="locations-multi-select">
+                  {locations.map(location => (
+                    <label key={location.id} className="location-checkbox">
+                      <input
+                        type="checkbox"
+                        checked={form.locationIds.includes(location.id)}
+                        onChange={() => handleLocationChange(location.id)}
+                      />
+                      <span>{location.name} {location.isHome && '🏠'}</span>
+                    </label>
                   ))}
-                </select>
+                </div>
+                {form.locationIds.length > 0 && (
+                  <p className="help-text">
+                    Sélectionnés : {form.locationIds.length} lieu(x)
+                  </p>
+                )}
               </div>
             )}
 
