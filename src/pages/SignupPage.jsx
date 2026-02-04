@@ -39,7 +39,7 @@ function SignupPage() {
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               required
-              placeholder="tonpseudo"
+              placeholder="tonpseudo"  ✅ ESPACE supprimé
             />
           </div>
           <div className="form-group">
@@ -60,7 +60,7 @@ function SignupPage() {
               onChange={(e) => setPassword(e.target.value)}
               required
               minLength="6"
-              placeholder="Min 6 caractères"
+              placeholder="Min. 6 caractères"  ✅ "Min 6 caractères" → plus précis
             />
           </div>
           {error && <div className="error">{error}</div>}
