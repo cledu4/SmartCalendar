@@ -12,6 +12,11 @@ function Navbar() {
       <div className="nav-brand">
         <Link to="/dashboard">🗓️ SmartCalendar</Link>
       </div>
+
+      {/* Pseudo ou Utilisateur */}
+      <div className="nav-user">
+        {username || user?.email?.split('@')[0] || 'Utilisateur'}
+      </div>
       
       {/* NOUVEAUX LIENS */}
       <div className="nav-links">
@@ -22,11 +27,6 @@ function Navbar() {
         <Link to="/schedule">Emploi du temps</Link>
         <Link to="/locations">Lieux</Link>
         <Link to="/settings">Paramètres</Link>
-      </div>
-      
-      {/* Pseudo ou Utilisateur */}
-      <div className="nav-user">
-        {username || user?.email?.split('@')[0] || 'Utilisateur'}
       </div>
       
       {/* Déconnexion */}
