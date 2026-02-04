@@ -1,10 +1,15 @@
-// src/components/Navbar.jsx - VERSION COMPLÈTE
+// src/components/Navbar.jsx - PSEUDO + SUPPRIME "IA"
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
 function Navbar() {
   const { user, logout } = useAuth();
+
+  // 👇 RÉCUPÈRE LE PSEUDO depuis la table profiles
+  const getUsername = () => {
+    return user?.user_metadata?.username || 'Utilisateur';
+  };
 
   return (
     <nav className="navbar">
@@ -13,17 +18,17 @@ function Navbar() {
         <Link to="/dashboard">🗓️ SmartCalendar</Link>
       </div>
       
-      {/* Nom utilisateur */}
+      {/* Nom utilisateur CORRIGÉ */}
       <div className="nav-user">
-        {user?.user_metadata?.username || user?.email?.split('@')[0] || 'Utilisateur'}
+        {getUsername()}
       </div>
       
-      {/* Liens navigation - ESPACÉS */}
+      {/* Liens navigation SANS IA */}
       <div className="nav-links">
         <Link to="/dashboard">Accueil</Link>
         <Link to="/calendar">Calendrier</Link>
         <Link to="/tasks">Tâches</Link>
-        <Link to="/ai-chat">IA</Link>
+        {/* 👈 IA supprimé */}
         <Link to="/messenger">Messagerie</Link>
       </div>
       
