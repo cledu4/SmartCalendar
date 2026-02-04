@@ -1,20 +1,20 @@
 // src/App.jsx
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import { AuthProvider } from './context/AuthContext';
-import ProtectedRoute from './components/ProtectedRoute';
+import { AuthProvider } from './context/AuthContext.jsx';
+import ProtectedRoute from './components/ProtectedRoute.jsx';
 
 // Pages publiques
-import LoginPage from './pages/LoginPage';
-import SignupPage from './pages/SignupPage';
+import LoginPage from './pages/LoginPage.jsx';
+import SignupPage from './pages/SignupPage.jsx';
 
 // Pages protégées (existantes)
-import Dashboard from './pages/Dashboard';
-import CalendarPage from './pages/CalendarPage';
-import LocationsPage from './pages/LocationsPage';
-import RecurringSchedulePage from './pages/RecurringSchedulePage';
-import FindSlotPage from './pages/FindSlotPage';
-import SettingsPage from './pages/SettingsPage';
+import Dashboard from './pages/Dashboard.jsx';
+import CalendarPage from './pages/CalendarPage.jsx';
+import LocationsPage from './pages/LocationsPage.jsx';
+import RecurringSchedulePage from './pages/RecurringSchedulePage.jsx';
+import FindSlotPage from './pages/FindSlotPage.jsx';
+import SettingsPage from './pages/SettingsPage.jsx';
 
 // Layout
 import Navbar from "./components/Navbar";
