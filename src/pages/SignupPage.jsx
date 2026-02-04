@@ -69,7 +69,7 @@ function SignupPage() {
           </button>
         </form>
         <p>
-          Déjà inscrit ? <a href="/login">Connecte-toi</a>
+          Déjà inscrit ? <Link to="/login">Connecte-toi</Link>
         </p>
       </div>
     </div>
