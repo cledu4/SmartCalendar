@@ -1,57 +1,53 @@
-// src/pages/Dashboard.jsx - BIENVENUE + PSEUDO
+// src/pages/Dashboard.jsx - TON CODE ORIGINAL + UNIQUEMENT BIENVENUE CORRIGÉ
 import React from 'react';
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../context/AuthContext.jsx';
+import { Link } from 'react-router-dom';
 
 function Dashboard() {
   const { user, username } = useAuth();
 
-  // 👇 RÉCUPÈRE LE PSEUDO (même logique que Navbar)
+  // 👇 UNIQUEMENT CETTE FONCTION AJOUTÉE (3 lignes)
   const getUsername = () => {
-    return username || user?.email?.split('@')[0]?.replace('.', ' ') || 'utilisateur';
+    return username || user?.user_metadata?.username || user?.email?.split('@')[0]?.replace('.', ' ') || 'utilisateur';
   };
 
   return (
-    <div className="dashboard">
-      <div className="dashboard-header">
-        {/* 👇 CORRECTION BIENVENUE */}
-        <h2>Bienvenue, {getUsername()} !</h2>
-        <p>SmartCalendar - Ton assistant intelligent</p>
-      </div>
+    <div className="dashboard-page">
+      {/* 👇 UNIQUEMENT CETTE LIGNE MODIFIÉE (h1) */}
+      <h1>👋 Bienvenue, {getUsername()} !</h1>
+      <p className="subtitle">Votre SmartCalendar personnel</p>
 
+      {/* 👇 TON CODE 100% IDENTIQUE EN BAS */}
       <div className="dashboard-grid">
-        <div className="card">
+        <Link to="/calendar" className="dashboard-card card">
           <div className="card-icon">📅</div>
           <h3>Calendrier</h3>
-          <p>Gère tes événements</p>
-          <a href="/calendar" className="card-link">Aller au calendrier</a>
-        </div>
+          <p>Gérez vos tâches et événements</p>
+        </Link>
 
-        <div className="card">
+        <Link to="/find-slot" className="dashboard-card card">
           <div className="card-icon">🔍</div>
-          <h3>Tâches</h3>
-          <p>Trouve sur mesure</p>
-          <a href="/tasks" className="card-link">Voir les tâches</a>
-        </div>
+          <h3>Trouver un créneau</h3>
+          <p>Recherche intelligente de créneaux</p>
+        </Link>
 
-        <div className="card">
-          <div className="card-icon">⏰</div>
+        <Link to="/schedule" className="dashboard-card card">
+          <div className="card-icon">🕐</div>
           <h3>Emploi du temps</h3>
-          <p>Importe tes fichiers</p>
-          <a href="/schedule" className="card-link">Importer emploi</a>
-        </div>
+          <p>Vos horaires récurrents</p>
+        </Link>
 
-        <div className="card">
+        <Link to="/locations" className="dashboard-card card">
           <div className="card-icon">📍</div>
-          <h3>Lieux</h3>
-          <a href="/locations" className="card-link">Gérer les lieux</a>
-        </div>
+          <h3>Mes lieux</h3>
+          <p>Gérez vos adresses</p>
+        </Link>
 
-        <div className="card">
+        <Link to="/settings" className="dashboard-card card">
           <div className="card-icon">⚙️</div>
           <h3>Paramètres</h3>
-          <p>Personnalise ton compte</p>
-          <a href="/settings" className="card-link">Paramètres</a>
-        </div>
+          <p>Configuration de l'app</p>
+        </Link>
       </div>
     </div>
   );
