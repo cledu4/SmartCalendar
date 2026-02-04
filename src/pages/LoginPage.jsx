@@ -57,7 +57,7 @@ function LoginPage() {
           </button>
         </form>
         <p>
-          Pas de compte ? <a href="/signup">Inscris-toi</a>
+          Pas de compte ? <a href="/SignupPage">Inscris-toi</a>
         </p>
       </div>
     </div>
