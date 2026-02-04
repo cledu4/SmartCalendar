@@ -1,52 +1,36 @@
-// src/components/Navbar.jsx
+// src/components/Navbar.jsx - VERSION COMPLÈTE
 import React from 'react';
-import { NavLink, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
 function Navbar() {
   const { user, logout } = useAuth();
-  const navigate = useNavigate();
-
-  const handleLogout = async () => {
-    try {
-      await logout();
-      navigate('/login');
-    } catch (error) {
-      console.error('Erreur déconnexion:', error);
-    }
-  };
 
   return (
     <nav className="navbar">
-      <div className="navbar-brand">
-        <h2>📅 SmartCalendar</h2>
+      {/* Logo */}
+      <div className="nav-brand">
+        <Link to="/dashboard">🗓️ SmartCalendar</Link>
       </div>
       
-      <div className="navbar-menu">
-        <NavLink to="/dashboard" className={({ isActive }) => isActive ? 'nav-active' : ''}>
-          🏠 Accueil
-        </NavLink>
-        <NavLink to="/calendar" className={({ isActive }) => isActive ? 'nav-active' : ''}>
-          📅 Calendrier
-        </NavLink>
-        <NavLink to="/find-slot" className={({ isActive }) => isActive ? 'nav-active' : ''}>
-          🔍 Créneaux
-        </NavLink>
-        <NavLink to="/schedule" className={({ isActive }) => isActive ? 'nav-active' : ''}>
-          🕐 Planning
-        </NavLink>
-        <NavLink to="/locations" className={({ isActive }) => isActive ? 'nav-active' : ''}>
-          📍 Lieux
-        </NavLink>
-        <NavLink to="/settings" className={({ isActive }) => isActive ? 'nav-active' : ''}>
-          ⚙️ Paramètres
-        </NavLink>
+      {/* Nom utilisateur */}
+      <div className="nav-user">
+        {user?.user_metadata?.username || user?.email?.split('@')[0] || 'Utilisateur'}
       </div>
-
-      <div className="navbar-user">
-        <span>👤 {user?.user_metadata?.username || 'Utilisateur'}</span>
-        <button onClick={handleLogout} className="btn btn-secondary btn-sm">
-          🚪 Déconnexion
+      
+      {/* Liens navigation - ESPACÉS */}
+      <div className="nav-links">
+        <Link to="/dashboard">Accueil</Link>
+        <Link to="/calendar">Calendrier</Link>
+        <Link to="/tasks">Tâches</Link>
+        <Link to="/ai-chat">IA</Link>
+        <Link to="/messenger">Messagerie</Link>
+      </div>
+      
+      {/* Bouton déconnexion */}
+      <div className="nav-actions">
+        <button onClick={logout} className="logout-btn">
+          Déconnexion
         </button>
       </div>
     </nav>
