@@ -1,33 +1,46 @@
-// src/app.jsx - VERSION MINIMAL VERCEL
+// src/app.jsx - VERSION AVEC AUTH
 import React from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { AuthProvider } from './context/AuthContext.jsx';
+import ProtectedRoute from './components/ProtectedRoute.jsx';
+
+// Pages publiques
+import LoginPage from './pages/LoginPage.jsx';
+import SignupPage from './pages/SignupPage.jsx';
+
+// Pages protégées
+import Dashboard from './pages/Dashboard.jsx';
+import Navbar from './components/Navbar.jsx';
 
 function App() {
   return (
-    <div style={{ 
-      padding: '2rem', 
-      fontFamily: 'system-ui',
-      maxWidth: '800px',
-      margin: '0 auto'
-    }}>
-      <h1 style={{ color: '#3b82f6' }}>🚀 SmartCalendar</h1>
-      <p style={{ color: '#6b7280' }}>
-        <strong>✅ BUILD RÉUSSI !</strong><br/>
-        Déploiement Vercel OK ! 🎉
-      </p>
-      <div style={{ 
-        background: '#f8fafc', 
-        padding: '1.5rem', 
-        borderRadius: '8px', 
-        marginTop: '1rem'
-      }}>
-        <h3>📋 Prochaines étapes :</h3>
-        <ul>
-          <li>🔐 Config Supabase (.env)</li>
-          <li>🗄️ Tables SQL</li>
-          <li>⚡ Auth Login/Signup</li>
-        </ul>
-      </div>
-    </div>
+    <AuthProvider>
+      <Router>
+        <Routes>
+          {/* Routes publiques */}
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/signup" element={<SignupPage />} />
+
+          {/* Routes protégées avec Navbar */}
+          <Route
+            path="/*"
+            element={
+              <ProtectedRoute>
+                <div className="app">
+                  <Navbar />
+                  <div className="main-content">
+                    <Routes>
+                      <Route path="/" element={<Navigate to="/dashboard" replace />} />
+                      <Route path="/dashboard" element={<Dashboard />} />
+                    </Routes>
+                  </div>
+                </div>
+              </ProtectedRoute>
+            }
+          />
+        </Routes>
+      </Router>
+    </AuthProvider>
   );
 }
 
