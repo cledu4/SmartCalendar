@@ -1,10 +1,23 @@
-// src/components/Navbar.jsx - NOUVELLE STRUCTURE
+// src/components/Navbar.jsx - LIENS MODIFIÉS + PSEUDO VIA EMAIL
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
 function Navbar() {
-  const { user, username, logout } = useAuth();
+  const { user, logout } = useAuth();
+
+  // 👇 EXTRAIT LE PSEUDO du pseudo déjà donné à l'inscription
+  const getUsername = () => {
+    // Essaie user_metadata.username (renseigné à l'inscription)
+    if (user?.user_metadata?.username) {
+      return user.user_metadata.username;
+    }
+    // Sinon prend début email
+    if (user?.email) {
+      return user.email.split('@')[0];
+    }
+    return 'Utilisateur';
+  };
 
   return (
     <nav className="navbar">
@@ -13,12 +26,12 @@ function Navbar() {
         <Link to="/dashboard">🗓️ SmartCalendar</Link>
       </div>
 
-      {/* Pseudo ou Utilisateur */}
+      {/* PSEUDO */}
       <div className="nav-user">
-        {username || user?.email?.split('@')[0] || 'Utilisateur'}
+        {getUsername()}
       </div>
       
-      {/* NOUVEAUX LIENS */}
+      {/* TOUS LES LIENS */}
       <div className="nav-links">
         <Link to="/dashboard">Accueil</Link>
         <Link to="/calendar">Calendrier</Link>
