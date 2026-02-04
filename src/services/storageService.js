@@ -105,19 +105,27 @@ class StorageService {
   getRecurringSchedule(dayOfWeek = null) {
     const data = localStorage.getItem(KEYS.RECURRING_SCHEDULE);
     let schedules = data ? JSON.parse(data) : [];
-
+  
+    // 🔧 CONVERSION AUTOMATIQUE : locationId → locationIds
+    schedules = schedules.map(schedule => ({
+      ...schedule,
+      locationIds: schedule.locationIds || (schedule.locationId ? [schedule.locationId] : [])
+    }));
+  
     if (dayOfWeek !== null) {
       schedules = schedules.filter(s => s.dayOfWeek === dayOfWeek);
     }
-
+  
     return schedules;
   }
 
   addRecurringSchedule(schedule) {
-    const schedules = this.getRecurringSchedule();
+    const schedules = this.getRecurringSchedule(); // Utilise la version convertie
     const newSchedule = {
       id: Date.now(),
       ...schedule,
+      // ✅ Toujours stocker en locationIds (tableau)
+      locationIds: schedule.locationIds || (schedule.locationId ? [schedule.locationId] : []),
       createdAt: new Date().toISOString()
     };
     schedules.push(newSchedule);
