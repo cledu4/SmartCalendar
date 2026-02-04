@@ -35,8 +35,7 @@ function Navbar() {
       <div className="nav-links">
         <Link to="/dashboard">Accueil</Link>
         <Link to="/calendar">Calendrier</Link>
-        <Link to="/tasks">Tâches</Link>
-        <Link to="/slots">Créneau</Link>
+        <Link to="/find-slot">Trouver un Créneau</Link>
         <Link to="/schedule">Emploi du temps</Link>
         <Link to="/locations">Lieux</Link>
         <Link to="/settings">Paramètres</Link>
