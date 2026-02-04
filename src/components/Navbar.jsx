@@ -1,15 +1,10 @@
-// src/components/Navbar.jsx - PSEUDO + SUPPRIME "IA"
+// src/components/Navbar.jsx - NOUVELLE STRUCTURE
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
 function Navbar() {
-  const { user, logout } = useAuth();
-
-  // 👇 RÉCUPÈRE LE PSEUDO depuis la table profiles
-  const getUsername = () => {
-    return user?.user_metadata?.username || 'Utilisateur';
-  };
+  const { user, username, logout } = useAuth();
 
   return (
     <nav className="navbar">
@@ -18,21 +13,23 @@ function Navbar() {
         <Link to="/dashboard">🗓️ SmartCalendar</Link>
       </div>
       
-      {/* Nom utilisateur CORRIGÉ */}
-      <div className="nav-user">
-        {getUsername()}
-      </div>
-      
-      {/* Liens navigation SANS IA */}
+      {/* NOUVEAUX LIENS */}
       <div className="nav-links">
         <Link to="/dashboard">Accueil</Link>
         <Link to="/calendar">Calendrier</Link>
         <Link to="/tasks">Tâches</Link>
-        {/* 👈 IA supprimé */}
-        <Link to="/messenger">Messagerie</Link>
+        <Link to="/slots">Créneau</Link>
+        <Link to="/schedule">Emploi du temps</Link>
+        <Link to="/locations">Lieux</Link>
+        <Link to="/settings">Paramètres</Link>
       </div>
       
-      {/* Bouton déconnexion */}
+      {/* Pseudo ou Utilisateur */}
+      <div className="nav-user">
+        {username || user?.email?.split('@')[0] || 'Utilisateur'}
+      </div>
+      
+      {/* Déconnexion */}
       <div className="nav-actions">
         <button onClick={logout} className="logout-btn">
           Déconnexion
