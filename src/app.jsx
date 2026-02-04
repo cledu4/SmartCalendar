@@ -16,8 +16,6 @@ import FindSlotPage from './pages/FindSlotPage.jsx';
 import SchedulePage from './pages/SchedulePage.jsx';
 import LocationsPage from './pages/LocationsPage.jsx';
 import SettingsPage from './pages/SettingsPage.jsx';
-import TasksPage from './pages/TasksPage.jsx';     // 👈 AJOUTÉ
-import SlotsPage from './pages/SlotsPage.jsx';     // 👈 AJOUTÉ
 
 function App() {
   return (
@@ -38,8 +36,6 @@ function App() {
                       <Route path="/dashboard" element={<Dashboard />} />
                       <Route path="/calendar" element={<CalendarPage />} />
                       <Route path="/find-slot" element={<FindSlotPage />} />
-                      <Route path="/tasks" element={<TasksPage />} />
-                      <Route path="/slots" element={<SlotsPage />} />
                       <Route path="/schedule" element={<SchedulePage />} />
                       <Route path="/locations" element={<LocationsPage />} />
                       <Route path="/settings" element={<SettingsPage />} />
