@@ -32,8 +32,9 @@ function SignupPage() {
       <div className="auth-card">
         <h1>🚀 Inscription</h1>
         <form onSubmit={handleSubmit} className="auth-form">
+          {/* PSEUDO */}
           <div className="form-group">
-            <label>Nom d'utilisateur</label>
+            <label>Pseudo</label>
             <input
               type="text"
               value={username}
@@ -42,6 +43,8 @@ function SignupPage() {
               placeholder="tonpseudo"
             />
           </div>
+  
+          {/* EMAIL */}
           <div className="form-group">
             <label>Email</label>
             <input
@@ -52,6 +55,8 @@ function SignupPage() {
               placeholder="ton@email.com"
             />
           </div>
+  
+          {/* MOT DE PASSE */}
           <div className="form-group">
             <label>Mot de passe</label>
             <input
@@ -63,6 +68,7 @@ function SignupPage() {
               placeholder="Min. 6 caractères"
             />
           </div>
+  
           {error && <div className="error">{error}</div>}
           <button type="submit" disabled={loading} className="btn btn-primary">
             {loading ? '🔄 Création...' : 'S\'inscrire'}
