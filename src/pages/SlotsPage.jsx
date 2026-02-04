@@ -5,7 +5,7 @@ import { useAuth } from '../context/AuthContext.jsx';
 
 function SlotsPage() {
   return (
-    <div className="page" style={{ padding: '2rem
+    <div className="page">
       <div className="page-header">
         <h1>🎯 Créneaux</h1>
         <p>Optimiseur de créneaux intelligents</p>
