@@ -1216,3 +1216,63 @@ h3 {
   padding: var(--spacing-md);
   border-radius: var(--radius-md);
 }
+
+/* ============================================================================
+   MULTI-SELECT LIEUX - Emploi du temps
+   ============================================================================ */
+
+.locations-multi-select {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+  max-height: 200px;
+  overflow-y: auto;
+  padding: var(--spacing-sm);
+  background: var(--bg-secondary);
+  border: 2px solid #E0E0E0;
+  border-radius: var(--radius-md);
+  transition: var(--transition);
+}
+
+.locations-multi-select:hover {
+  border-color: var(--primary);
+}
+
+.location-checkbox {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-sm);
+  cursor: pointer;
+  border-radius: var(--radius-sm);
+  transition: var(--transition);
+}
+
+.location-checkbox:hover {
+  background-color: var(--primary-light);
+}
+
+.location-checkbox input[type="checkbox"] {
+  width: auto;
+  margin: 0;
+  cursor: pointer;
+}
+
+.location-checkbox span {
+  font-size: 0.95rem;
+}
+
+/* Affichage des lieux dans les cards */
+.location-text {
+  font-size: 0.85rem;
+  color: var(--success);
+  margin-top: var(--spacing-xs);
+  font-style: italic;
+}
+
+.empty-text {
+  color: var(--text-secondary);
+  font-style: italic;
+  text-align: center;
+  padding: var(--spacing-md);
+}
