@@ -1,4 +1,4 @@
-// src/context/AuthContext.jsx - VERSION VERCEL SAFE
+// src/context/AuthContext.jsx - VERSION COMPLÈTE
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { supabase } from '../lib/supabase';
 
@@ -16,6 +16,43 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  // 👇 FONCTION LOGIN AJOUTÉE
+  const login = async (email, password) => {
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
+    if (error) throw error;
+    return data;
+  };
+
+  // 👇 FONCTION SIGNUP AJOUTÉE
+  const signup = async (email, password, username) => {
+    // 1. Créer compte Supabase
+    const { data, error } = await supabase.auth.signUp({
+      email,
+      password,
+    });
+    
+    if (error) throw error;
+
+    // 2. Créer profil avec pseudo
+    if (data.user) {
+      await supabase.from('profiles').upsert({
+        id: data.user.id,
+        username,
+        updated_at: new Date().toISOString()
+      });
+    }
+
+    return data;
+  };
+
+  // 👇 FONCTION LOGOUT AJOUTÉE
+  const logout = async () => {
+    await supabase.auth.signOut();
+  };
+
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
       setUser(session?.user ?? null);
@@ -29,7 +66,13 @@ export const AuthProvider = ({ children }) => {
     return () => subscription.unsubscribe();
   }, []);
 
-  const value = { user, loading };
+  const value = { 
+    user, 
+    loading, 
+    login,      ✅
+    signup,     ✅
+    logout      ✅
+  };
 
   return (
     <AuthContext.Provider value={value}>
